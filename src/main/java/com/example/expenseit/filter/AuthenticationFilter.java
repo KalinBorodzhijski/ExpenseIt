@@ -22,20 +22,14 @@ public class AuthenticationFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String header = request.getHeader("Authorization");
-        if(header != null){
-            String[] tokenArr = header.split("Bearer ");
-            if(tokenArr[1] != null){
-                String token = tokenArr[1];
+        String token = request.getHeader("Authorization");
+        if(token != null){
 
-                try{
-                    Claims claims = Jwts.parser().setSigningKey(Constants.SECRET_KEY).parseClaimsJws(token).getBody();
-                    request.setAttribute("clientId", Integer.parseInt(claims.get("clientId").toString()));
-                }catch (Exception e){
-                    response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid or expired token");
-                }
-            } else{
-                response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid format. Format must be Bearer [token]");
+            try{
+                Claims claims = Jwts.parser().setSigningKey(Constants.SECRET_KEY).parseClaimsJws(token).getBody();
+                request.setAttribute("clientId", Integer.parseInt(claims.get("clientId").toString()));
+            }catch (Exception e){
+                response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid or expired token");
             }
         } else{
             response.sendError(HttpStatus.FORBIDDEN.value(), "Token must be provided");

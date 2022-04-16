@@ -13,4 +13,5 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 
     Integer countByEmail(String email);
     Client findByEmailAndPassword(String email, String password);
+    Client findByUserId(Integer userId);
 }
