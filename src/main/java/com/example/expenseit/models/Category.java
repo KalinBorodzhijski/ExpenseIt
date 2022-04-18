@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Category {
     @Column(name = "id")
     private int categoryId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Client userId;
 
@@ -31,8 +32,9 @@ public class Category {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "total_expense")
-    private Double totalExpense;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
+    private List<Expense> expenses;
 
 
 }

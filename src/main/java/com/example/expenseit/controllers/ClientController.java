@@ -41,11 +41,11 @@ public class ClientController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody String clientJSON) throws JsonProcessingException {
+    public ResponseEntity<Void> registerUser(@RequestBody String clientJSON) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ClientDTO clientDTO = objectMapper.readValue(clientJSON, ClientDTO.class);
         Client client = clientService.registerNewClient(clientDTO);
-        return new ResponseEntity<>(generateJWTToken(client), HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
 

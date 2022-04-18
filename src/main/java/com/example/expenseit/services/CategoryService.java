@@ -1,5 +1,6 @@
 package com.example.expenseit.services;
 
+import com.example.expenseit.errors.InvalidDataException;
 import com.example.expenseit.models.Category;
 import com.example.expenseit.models.Client;
 import com.example.expenseit.repositories.CategoryRepository;
@@ -23,7 +24,9 @@ public class CategoryService {
     }
 
     public Category getCategory(int clientId, int categoryId){
-        return categoryRepository.findByCategoryIdAndUserId_UserId(categoryId,clientId);
+        Category category = categoryRepository.findByCategoryIdAndUserId_UserId(categoryId,clientId);
+        if(category == null)throw new InvalidDataException("Category not found!");
+        return category;
     }
 
     public Category addCategory(int clientId, String title, String description){
@@ -34,11 +37,14 @@ public class CategoryService {
     }
 
     public Category deleteCategoryWithAllTransactions(int clientId, int categoryId){
-        return categoryRepository.deleteCategoryByCategoryIdAndUserId_UserId(categoryId,clientId);
+        List<Category> categories = categoryRepository.deleteByCategoryIdAndUserId_UserId(categoryId,clientId);
+        if(categories.isEmpty()) throw new InvalidDataException("There is no such category!");
+        return categories.get(0);
     }
 
     public Category updateCategory(int clientId, int categoryId, String title, String description) {
         Category category = categoryRepository.findByCategoryIdAndUserId_UserId(categoryId,clientId);
+        if(category == null)throw new InvalidDataException("Category not found!");
         category.setDescription(description);
         category.setTitle(title);
         return categoryRepository.save(category);

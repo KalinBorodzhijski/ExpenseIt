@@ -34,7 +34,6 @@ public class ClientService {
         return client;
     }
 
-
     public Client registerNewClient(ClientDTO clientDTO) throws AuthException{
 
         boolean isEmailValid = validateEmail(clientDTO.getEmail());

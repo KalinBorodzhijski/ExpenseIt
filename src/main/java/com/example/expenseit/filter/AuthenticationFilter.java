@@ -2,6 +2,7 @@ package com.example.expenseit.filter;
 
 
 import com.example.expenseit.Constants;
+import com.example.expenseit.errors.InvalidDataException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,10 @@ public class AuthenticationFilter extends GenericFilterBean {
                 Claims claims = Jwts.parser().setSigningKey(Constants.SECRET_KEY).parseClaimsJws(token).getBody();
                 request.setAttribute("clientId", Integer.parseInt(claims.get("clientId").toString()));
             }catch (Exception e){
-                response.sendError(HttpStatus.FORBIDDEN.value(), "Invalid or expired token");
+                throw new InvalidDataException("Invalid or expired token");
             }
         } else{
-            response.sendError(HttpStatus.FORBIDDEN.value(), "Token must be provided");
+            throw new InvalidDataException("Token must be provided");
         }
 
         filterChain.doFilter(servletRequest,servletResponse);

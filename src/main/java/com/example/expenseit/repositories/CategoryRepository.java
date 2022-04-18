@@ -13,5 +13,5 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
     Category findByCategoryIdAndUserId_UserId(Integer categoryId, Integer userId);
 
-    Category deleteCategoryByCategoryIdAndUserId_UserId(Integer categoryId, Integer clientId);
+    List<Category> deleteByCategoryIdAndUserId_UserId(Integer categoryId, Integer clientId);
 }

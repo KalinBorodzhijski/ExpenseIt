@@ -41,7 +41,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<Category>  updateCategory(@PathVariable("id") Integer categoryId, @RequestBody Map<String,String> map,HttpServletRequest request){
         int clientId = (int)request.getAttribute("clientId");
-        Category category = categoryService.updateCategory(categoryId,clientId,map.get("title"),map.get("description"));
+        Category category = categoryService.updateCategory(clientId,categoryId,map.get("title"),map.get("description"));
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
